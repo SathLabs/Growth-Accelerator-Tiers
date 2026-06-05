@@ -5,30 +5,35 @@ import dev.satherov.growthacceleratortiers.core.definitions.GATItems;
 
 import net.neoforged.neoforge.common.Tags;
 
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
 
+import appeng.core.ConventionTags;
 import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEItems;
-import appeng.datagen.providers.tags.ConventionTags;
 
 import java.util.concurrent.CompletableFuture;
 
-public class GATRecipeProvider extends RecipeProvider
-{
-    public GATRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, registries);
+public class GATRecipeProvider extends RecipeProvider {
+    
+    private final HolderGetter<Item> itemGetter;
+    
+    protected GATRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
+        super(registries, output);
+        this.itemGetter = registries.lookupOrThrow(Registries.ITEM);
     }
-
+    
     @Override
-    protected void buildRecipes(RecipeOutput output) {
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, GATBlocks.CRANKED_GROWTH_ACCELERATOR)
+    protected void buildRecipes() {
+        ShapedRecipeBuilder.shaped(this.itemGetter, RecipeCategory.MISC, GATBlocks.CRANKED_GROWTH_ACCELERATOR)
                 .pattern("DCD")
                 .pattern("BAB")
                 .pattern("DCD")
@@ -36,10 +41,10 @@ public class GATRecipeProvider extends RecipeProvider
                 .define('B', Tags.Items.INGOTS_IRON)
                 .define('C', AEBlocks.CRANK)
                 .define('D', Tags.Items.COBBLESTONES)
-                .unlockedBy("has_crank", has(AEBlocks.CRANK))
-                .save(output);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, GATBlocks.DIRECTIONAL_GROWTH_ACCELERATOR)
+                .unlockedBy("has_crank", this.has(AEBlocks.CRANK))
+                .save(this.output);
+        
+        ShapedRecipeBuilder.shaped(this.itemGetter, RecipeCategory.MISC, GATBlocks.DIRECTIONAL_GROWTH_ACCELERATOR)
                 .pattern("ECE")
                 .pattern("BAB")
                 .pattern("DFD")
@@ -49,10 +54,10 @@ public class GATRecipeProvider extends RecipeProvider
                 .define('D', Tags.Items.INGOTS_NETHERITE)
                 .define('E', AEItems.SPEED_CARD)
                 .define('F', AEItems.FORMATION_CORE)
-                .unlockedBy("had_accelerator", has(AEBlocks.GROWTH_ACCELERATOR))
-                .save(output);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, GATBlocks.BOOSTED_GROWTH_ACCELERATOR)
+                .unlockedBy("had_accelerator", this.has(AEBlocks.GROWTH_ACCELERATOR))
+                .save(this.output);
+        
+        ShapedRecipeBuilder.shaped(this.itemGetter, RecipeCategory.MISC, GATBlocks.BOOSTED_GROWTH_ACCELERATOR)
                 .pattern("ECE")
                 .pattern("BAB")
                 .pattern("DFD")
@@ -62,17 +67,34 @@ public class GATRecipeProvider extends RecipeProvider
                 .define('D', Tags.Items.INGOTS_NETHERITE)
                 .define('E', AEItems.SPEED_CARD)
                 .define('F', AEItems.ANNIHILATION_CORE)
-                .unlockedBy("had_accelerator", has(AEBlocks.GROWTH_ACCELERATOR))
-                .save(output);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, GATItems.DIRECTIONAL_MODIFIER)
+                .unlockedBy("had_accelerator", this.has(AEBlocks.GROWTH_ACCELERATOR))
+                .save(this.output);
+        
+        ShapedRecipeBuilder.shaped(this.itemGetter, RecipeCategory.MISC, GATItems.DIRECTIONAL_MODIFIER)
                 .pattern(" B ")
                 .pattern(" AB")
                 .pattern("C  ")
                 .define('A', ConventionTags.WRENCH)
                 .define('B', AEItems.FLUIX_PEARL)
                 .define('C', ConventionTags.CERTUS_QUARTZ)
-                .unlockedBy("has_wrench", has(ConventionTags.WRENCH))
-                .save(output);
+                .unlockedBy("has_wrench", this.has(ConventionTags.WRENCH))
+                .save(this.output);
+    }
+    
+    public static class Runner extends RecipeProvider.Runner {
+        
+        public Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
+            super(packOutput, registries);
+        }
+        
+        @Override
+        protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
+            return new GATRecipeProvider(registries, output);
+        }
+        
+        @Override
+        public String getName() {
+            return "Recipes: Growth Accelerator Tiers";
+        }
     }
 }

@@ -2,24 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "item": "ae2:growth_accelerator"
-    },
-    "B": {
-      "tag": "c:gems/emerald"
-    },
-    "C": {
-      "item": "ae2:fluix_pearl"
-    },
-    "D": {
-      "tag": "c:ingots/netherite"
-    },
-    "E": {
-      "item": "ae2:speed_card"
-    },
-    "F": {
-      "item": "ae2:annihilation_core"
-    }
+    "A": "ae2:growth_accelerator",
+    "B": "#c:gems/emerald",
+    "C": "ae2:fluix_pearl",
+    "D": "#c:ingots/netherite",
+    "E": "ae2:speed_card",
+    "F": "ae2:annihilation_core"
   },
   "pattern": [
     "ECE",
@@ -27,7 +15,6 @@
     "DFD"
   ],
   "result": {
-    "count": 1,
     "id": "growthacceleratortiers:boosted_growth_accelerator"
   }
 }

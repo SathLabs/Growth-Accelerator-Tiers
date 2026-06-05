@@ -1,0 +1,34 @@
+license="${mod_license}"
+issueTrackerURL="https://github.com/SathLabs/Growth-Accelerator-Tiers/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/growth-accelerator-tiers"
+#logoFile="examplemod.png"
+authors="Satherov"
+
+description='''
+A simple mod that adds multiple tiers to the Applied Energistics 2 Growth Accelerators
+'''
+
+[[mixins]]
+config="${mod_id}.mixins.json"
+
+#[[accessTransformers]]
+#file="META-INF/accesstransformer.cfg"
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="[${neo_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"

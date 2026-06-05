@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "tag": "c:tools/wrench"
-    },
-    "B": {
-      "item": "ae2:fluix_pearl"
-    },
-    "C": {
-      "tag": "c:gems/certus_quartz"
-    }
+    "A": "#c:tools/wrench",
+    "B": "ae2:fluix_pearl",
+    "C": "#c:gems/certus_quartz"
   },
   "pattern": [
     " B ",
@@ -18,7 +12,6 @@
     "C  "
   ],
   "result": {
-    "count": 1,
     "id": "growthacceleratortiers:directional_modifier"
   }
 }

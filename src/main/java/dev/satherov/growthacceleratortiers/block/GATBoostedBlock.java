@@ -4,8 +4,8 @@ import dev.satherov.growthacceleratortiers.blockentity.GATBoostedBlockEntity;
 import dev.satherov.growthacceleratortiers.core.definitions.GATAttachmentTypes;
 
 public class GATBoostedBlock extends GATMonoBlock<GATBoostedBlockEntity> {
-
-    public GATBoostedBlock() {
-        super(GATAttachmentTypes.BOOSTED_POSITION);
+    
+    public GATBoostedBlock(Properties properties) {
+        super(properties, GATAttachmentTypes.BOOSTED_POSITION);
     }
 }

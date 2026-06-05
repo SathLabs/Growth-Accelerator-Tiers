@@ -22,35 +22,35 @@ public abstract class GATMonoBlockEntity extends GATGrowthAcceleratorBlockEntity
     public GATMonoBlockEntity(int maxStoredPower, int powerPerTick, double multiplier, BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
         super(maxStoredPower, powerPerTick, multiplier, blockEntityType, pos, blockState);
     }
-
+    
     @Override
     protected void onTick(int ticksSinceLastCall) {
-        if (!(getLevel() instanceof ServerLevel level)) {
-            if (!cache) super.onTick(ticksSinceLastCall);
+        if (!(this.getLevel() instanceof ServerLevel level)) {
+            if (!this.cache) super.onTick(ticksSinceLastCall);
             return;
         }
         
-        boolean conflicted = cache;
+        boolean conflicted = this.cache;
         boolean check = false;
         
-        if (cooldown > 0) {
-            cooldown -= ticksSinceLastCall;
+        if (this.cooldown > 0) {
+            this.cooldown -= ticksSinceLastCall;
         }
         
-        if (cooldown <= 0) {
+        if (this.cooldown <= 0) {
             check = true;
-            cooldown = 40;
+            this.cooldown = 40;
         }
         
         if (check) {
             conflicted = false;
             
             for (Direction dir : Direction.values()) {
-                BlockPos relative = getBlockPos().relative(dir).immutable();
+                BlockPos relative = this.getBlockPos().relative(dir).immutable();
                 BlockState state = level.getBlockState(relative);
                 if (!state.is(AETags.GROWTH_ACCELERATABLE)) continue;
                 ChunkAccess chunk = level.getChunkAt(relative);
-                if (getBlockState().getBlock() instanceof GATMonoBlock<?> block) {
+                if (this.getBlockState().getBlock() instanceof GATMonoBlock<?> block) {
                     PositionAttachment data = chunk.getData(block.getAttachmentType());
                     if (data.get(relative) > 1 && GATConfig.instance().enableConflicts()) {
                         conflicted = true;
@@ -60,12 +60,12 @@ public abstract class GATMonoBlockEntity extends GATGrowthAcceleratorBlockEntity
             }
         }
         
-        if (conflicted != getBlockState().getValue(GATMonoBlock.CONFLICTED)) {
-            level.setBlockAndUpdate(getBlockPos(), getBlockState().setValue(GATMonoBlock.CONFLICTED, conflicted));
+        if (conflicted != this.getBlockState().getValue(GATMonoBlock.CONFLICTED)) {
+            level.setBlockAndUpdate(this.getBlockPos(), this.getBlockState().setValue(GATMonoBlock.CONFLICTED, conflicted));
         }
         
-        cache = conflicted;
+        this.cache = conflicted;
         
-        if (!cache) super.onTick(ticksSinceLastCall);
+        if (!this.cache) super.onTick(ticksSinceLastCall);
     }
 }

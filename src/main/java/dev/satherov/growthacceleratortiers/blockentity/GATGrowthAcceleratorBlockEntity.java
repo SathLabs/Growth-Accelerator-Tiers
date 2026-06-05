@@ -28,105 +28,105 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public abstract class GATGrowthAcceleratorBlockEntity extends AENetworkedPoweredBlockEntity implements IPowerChannelState {
-
+    
     protected final int powerPerTick;
     protected final double multiplier;
-
+    
     public GATGrowthAcceleratorBlockEntity(int maxStoredPower, int powerPerTick, double multiplier, BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
         super(blockEntityType, pos, blockState);
         this.powerPerTick = powerPerTick;
         this.multiplier = multiplier;
-        setInternalMaxPower(maxStoredPower);
-        setPowerSides(getGridConnectableSides(getOrientation()));
-        getMainNode().setFlags();
-        getMainNode().setIdlePowerUsage(powerPerTick);
-        getMainNode().addService(IGridTickable.class, new IGridTickable() {
+        this.setInternalMaxPower(maxStoredPower);
+        this.setPowerSides(this.getGridConnectableSides(this.getOrientation()));
+        this.getMainNode().setFlags();
+        this.getMainNode().setIdlePowerUsage(powerPerTick);
+        this.getMainNode().addService(IGridTickable.class, new IGridTickable() {
             @Override
             public TickingRequest getTickingRequest(IGridNode node) {
                 int speed = AEConfig.instance().getGrowthAcceleratorSpeed();
                 return new TickingRequest(speed, speed, false);
             }
-
+            
             @Override
             public TickRateModulation tickingRequest(IGridNode node, int ticksSinceLastCall) {
-                onTick(ticksSinceLastCall);
+                GATGrowthAcceleratorBlockEntity.this.onTick(ticksSinceLastCall);
                 return TickRateModulation.SAME;
             }
         });
     }
-
+    
     protected void onTick(int ticksSinceLastCall) {
-
+        
         var powered = this.isPowered();
-        if (powered != getBlockState().getValue(GATGrowthAcceleratorBlock.POWERED)) {
+        if (powered != this.getBlockState().getValue(GATGrowthAcceleratorBlock.POWERED)) {
             this.markForUpdate();
         }
-
+        
         if (!powered) {
             return;
         }
-
-        extractAEPower(powerPerTick * ticksSinceLastCall, Actionable.MODULATE);
-
+        
+        this.extractAEPower(this.powerPerTick * ticksSinceLastCall, Actionable.MODULATE);
+        
         for (var direction : Direction.values()) {
             var adjPos = this.getBlockPos().relative(direction);
             var adjState = this.getLevel().getBlockState(adjPos);
-
+            
             if (!adjState.is(AETags.GROWTH_ACCELERATABLE)) {
                 continue;
             }
-
-            for (int i = 0; i < multiplier; i++) {
+            
+            for (int i = 0; i < this.multiplier; i++) {
                 adjState.randomTick((ServerLevel) this.getLevel(), adjPos, this.getLevel().getRandom());
             }
         }
     }
-
+    
     @Override
     public InternalInventory getInternalInventory() {
         return InternalInventory.empty();
     }
-
+    
     @Override
     public Set<Direction> getGridConnectableSides(BlockOrientation orientation) {
         return orientation.getSides(EnumSet.of(RelativeSide.FRONT, RelativeSide.BACK));
     }
-
+    
     @Override
     protected void onOrientationChanged(BlockOrientation orientation) {
         super.onOrientationChanged(orientation);
-        setPowerSides(getGridConnectableSides(getOrientation()));
+        this.setPowerSides(this.getGridConnectableSides(this.getOrientation()));
     }
-
+    
     @Override
     public void onMainNodeStateChanged(IGridNodeListener.State reason) {
         if (reason == IGridNodeListener.State.POWER) {
             this.markForUpdate();
         }
     }
-
+    
     @Override
     public AECableType getCableConnectionType(Direction dir) {
         return AECableType.COVERED;
     }
-
+    
     @Override
     public boolean isPowered() {
-        if (!isClientSide()) {
-            return getMainNode().isPowered() || extractAEPower(powerPerTick, Actionable.SIMULATE) >= powerPerTick;
+        if (!this.isClientSide()) {
+            return this.getMainNode().isPowered() || this.extractAEPower(this.powerPerTick, Actionable.SIMULATE) >= this.powerPerTick;
         }
-
+        
         return this.getBlockState().getValue(GATGrowthAcceleratorBlock.POWERED);
     }
-
+    
     @Override
     public boolean isActive() {
         return this.isPowered();
     }
-
+    
     @org.jetbrains.annotations.Nullable
     public ICrankable getCrankable(Direction direction) {
-        if (getPowerSides().contains(direction)) {
+        if (this.getPowerSides().contains(direction)) {
             return new Crankable();
         }
         return null;

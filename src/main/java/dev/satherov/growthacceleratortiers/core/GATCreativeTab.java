@@ -22,11 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GATCreativeTab {
-
+    
     private static final Multimap<ResourceKey<CreativeModeTab>, ItemDefinition<?>> externalItemDefs = HashMultimap
             .create();
     private static final List<ItemDefinition<?>> itemDefs = new ArrayList<>();
-
+    
     public static void init(Registry<CreativeModeTab> registry) {
         var tab = CreativeModeTab.builder()
                 .title(GuiText.CreativeTab.text())
@@ -35,25 +35,25 @@ public class GATCreativeTab {
                 .build();
         Registry.register(registry, GATCreativeTabIds.MAIN, tab);
     }
-
+    
     public static void initExternal(BuildCreativeModeTabContentsEvent contents) {
-        for (var itemDefinition : externalItemDefs.get(contents.getTabKey())) {
+        for (var itemDefinition : GATCreativeTab.externalItemDefs.get(contents.getTabKey())) {
             contents.accept(itemDefinition);
         }
     }
-
+    
     public static void add(ItemDefinition<?> itemDef) {
-        itemDefs.add(itemDef);
+        GATCreativeTab.itemDefs.add(itemDef);
     }
-
+    
     public static void addExternal(ResourceKey<CreativeModeTab> tab, ItemDefinition<?> itemDef) {
-        externalItemDefs.put(tab, itemDef);
+        GATCreativeTab.externalItemDefs.put(tab, itemDef);
     }
-
+    
     private static void buildDisplayItems(CreativeModeTab.ItemDisplayParameters itemDisplayParameters, CreativeModeTab.Output output) {
-        for (var itemDef : itemDefs) {
+        for (var itemDef : GATCreativeTab.itemDefs) {
             var item = itemDef.asItem();
-
+            
             // For block items, the block controls the creative tab
             if (item instanceof AEBaseBlockItem baseItem
                     && baseItem.getBlock() instanceof AEBaseBlock baseBlock) {

@@ -27,8 +27,8 @@ import java.util.function.Supplier;
 
 @Mixin(BuddingGeoreBlock.class)
 public class BuddingGeoreBlockMixin implements BuddingBlockGrowthHandler {
-
-
+    
+    
     @Shadow
     @Final
     private Supplier<? extends AmethystClusterBlock> smallSupplier;
@@ -41,7 +41,7 @@ public class BuddingGeoreBlockMixin implements BuddingBlockGrowthHandler {
     @Shadow
     @Final
     private Supplier<? extends AmethystClusterBlock> clusterSupplier;
-
+    
     @Inject(
             method = "randomTick",
             at = @At(value = "INVOKE",
@@ -50,30 +50,30 @@ public class BuddingGeoreBlockMixin implements BuddingBlockGrowthHandler {
             cancellable = true
     )
     private void onRandomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {
-        if (growthAcceleratorTiers$checkForAccelerator(state, level, pos, random)) {
+        if (this.growthAcceleratorTiers$checkForAccelerator(state, level, pos, random)) {
             ci.cancel();
         }
     }
-
+    
     @Override
     @Unique
     public void growthAcceleratorTiers$handleGrowth(ServerLevel level, BlockPos pos, BlockPos growthPos, Direction direction, RandomSource randomSource) {
         BlockState targetState = level.getBlockState(growthPos);
         Block newBlock = null;
-
+        
         if (BuddingAmethystBlock.canClusterGrowAtState(targetState)) {
-            newBlock = smallSupplier.get();
-        } else if (targetState.is(smallSupplier.get()) &&
+            newBlock = this.smallSupplier.get();
+        } else if (targetState.is(this.smallSupplier.get()) &&
                 targetState.getValue(AmethystClusterBlock.FACING) == direction) {
-            newBlock = mediumSupplier.get();
-        } else if (targetState.is(mediumSupplier.get()) &&
+            newBlock = this.mediumSupplier.get();
+        } else if (targetState.is(this.mediumSupplier.get()) &&
                 targetState.getValue(AmethystClusterBlock.FACING) == direction) {
-            newBlock = largeSupplier.get();
-        } else if (targetState.is(largeSupplier.get()) &&
+            newBlock = this.largeSupplier.get();
+        } else if (targetState.is(this.largeSupplier.get()) &&
                 targetState.getValue(AmethystClusterBlock.FACING) == direction) {
-            newBlock = clusterSupplier.get();
+            newBlock = this.clusterSupplier.get();
         }
-
+        
         if (newBlock != null) {
             BlockState newState = newBlock.defaultBlockState()
                     .setValue(AmethystClusterBlock.FACING, direction)

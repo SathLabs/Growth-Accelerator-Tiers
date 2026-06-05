@@ -1,12 +1,12 @@
 package dev.satherov.growthacceleratortiers.api;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class GAT {
-
+    
     public static final String MOD_ID = "growthacceleratortiers";
-
-    public static ResourceLocation rl(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    
+    public static Identifier rl(String path) {
+        return Identifier.fromNamespaceAndPath(GAT.MOD_ID, path);
     }
 }

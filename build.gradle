@@ -1,7 +1,8 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.92'
+    id 'net.neoforged.moddev' version '2.0.141'
+    id 'io.freefair.lombok' version '9.2.0'
     id 'idea'
 }
 
@@ -9,22 +10,28 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-version = mod_version + "_neoforge_" + minecraft_version
+version = mod_version + "+" + minecraft_version
 group = mod_group_id
+
+sourceSets.main.resources {
+    srcDir('src/generated/resources')
+
+    exclude("**/*.bbmodel")
+    exclude("src/generated/**/.cache")
+}
 
 base {
     archivesName = mod_id
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
+    withSourcesJar()
+    withJavadocJar()
+}
 
 neoForge {
     version = project.neo_version
-
-    parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
-    }
 
     // accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -46,14 +53,11 @@ neoForge {
         }
 
         data {
-            data()
+            clientData()
             programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
 
         configureEach {
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
             systemProperty 'forge.logging.markers', 'REGISTRIES'
             logLevel = org.slf4j.event.Level.DEBUG
         }
@@ -67,7 +71,6 @@ neoForge {
 }
 
 sourceSets.main.resources {
-    srcDir 'src/generated/resources'
     exclude '.cache/'
 }
 
@@ -76,70 +79,82 @@ configurations {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven {
-        name = "Cursemaven"
         url "https://cursemaven.com"
         content {
             includeGroup "curse.maven"
         }
     }
+    maven { // JEI
+        url "https://maven.blamejared.com/"
+    }
     maven {
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/"
+        url "https://api.modrinth.com/maven"
     }
 }
 
 dependencies {
-    compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
-    runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
-
-    implementation "curse.maven:guideme-1173950:6812025"
+    compileOnly "mezz.jei:jei-26.1.2-neoforge-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-26.1.2-neoforge:${jei_version}"
+    
+    implementation "org.appliedenergistics:guideme:26.1.11-beta"
     implementation "org.appliedenergistics:appliedenergistics2:${ae2_version}:"
 
-    implementation "curse.maven:jade-324717:6853386"
-    implementation "curse.maven:geore-530544:6550861"
+    implementation "maven.modrinth:jade:${jade_version}"
+    implementation "curse.maven:geore-530544:8070055"
 
-    implementation "curse.maven:glodium-957920:5821676"
-    implementation "curse.maven:ex-pattern-provider-892005:6863556"
+    implementation "curse.maven:glodium-957920:8196173"
+    implementation "curse.maven:ex-pattern-provider-892005:8196267"
 
-    implementation "curse.maven:mekanism-268560:6486993"
-    implementation "curse.maven:just-dire-things-1002348:6369120"
-    implementation "curse.maven:super-factory-manager-306935:6849471"
+    implementation "curse.maven:just-dire-things-1002348:8042519"
 }
 
-tasks.withType(ProcessResources).configureEach {
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
     var replaceProperties = [
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
             neo_version            : neo_version,
-            neo_version_range      : neo_version_range,
-            loader_version_range   : loader_version_range,
             mod_id                 : mod_id,
             mod_name               : mod_name,
             mod_license            : mod_license,
             mod_version            : mod_version,
-            mod_authors            : mod_authors,
-            mod_description        : mod_description
     ]
     inputs.properties replaceProperties
-
-    filesMatching(['META-INF/neoforge.mods.toml']) {
-        expand replaceProperties
-    }
-
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
 }
+
+sourceSets.main.resources.srcDir generateModMetadata
 
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
             from components.java
+            groupId = project.mod_group_id
+            artifactId = project.mod_id
+            version = project.version
         }
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/repo"
+            name = 'reposilite'
+
+            def isSnapshot = project.version.toString().endsWith('-SNAPSHOT')
+            def repoUrl = isSnapshot ? 'https://maven.satherov.dev/snapshots' : 'https://maven.satherov.dev/releases'
+
+            url = uri(repoUrl)
+
+            credentials {
+                username = System.getenv('REPOSILITE_USERNAME')
+                password = System.getenv('REPOSILITE_TOKEN')
+            }
+
+            authentication {
+                basic(BasicAuthentication)
+            }
         }
     }
 }

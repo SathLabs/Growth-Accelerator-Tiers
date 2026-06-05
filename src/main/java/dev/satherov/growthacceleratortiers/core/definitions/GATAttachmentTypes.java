@@ -14,20 +14,20 @@ import java.util.function.Supplier;
 public class GATAttachmentTypes {
     
     private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, GAT.MOD_ID);
-
-    public static final Supplier<AttachmentType<PositionAttachment>> BOOSTED_POSITION = ATTACHMENT_TYPES.register("boosted_position", () -> 
+    
+    public static final Supplier<AttachmentType<PositionAttachment>> BOOSTED_POSITION = GATAttachmentTypes.ATTACHMENT_TYPES.register("boosted_position", () ->
             AttachmentType.builder(PositionAttachment::new)
                     .serialize(PositionAttachment.CODEC)
                     .build()
     );
-
-    public static final Supplier<AttachmentType<PositionAttachment>> DIRECTIONAL_POSITION = ATTACHMENT_TYPES.register("directional_position", () ->
+    
+    public static final Supplier<AttachmentType<PositionAttachment>> DIRECTIONAL_POSITION = GATAttachmentTypes.ATTACHMENT_TYPES.register("directional_position", () ->
             AttachmentType.builder(PositionAttachment::new)
                     .serialize(PositionAttachment.CODEC)
                     .build()
     );
     
     public static void register(IEventBus modEventBus) {
-        ATTACHMENT_TYPES.register(modEventBus);
+        GATAttachmentTypes.ATTACHMENT_TYPES.register(modEventBus);
     }
 }

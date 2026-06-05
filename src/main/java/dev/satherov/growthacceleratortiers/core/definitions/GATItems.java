@@ -8,12 +8,15 @@ import dev.satherov.growthacceleratortiers.item.GATDirectionalModifier;
 
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
+import com.google.common.base.Preconditions;
+
 import org.jetbrains.annotations.Nullable;
+
 import appeng.core.definitions.ItemDefinition;
 
 import java.util.ArrayList;
@@ -22,36 +25,34 @@ import java.util.Objects;
 import java.util.function.Function;
 
 public class GATItems {
-
+    
     public static final DeferredRegister.Items DR = DeferredRegister.createItems(GAT.MOD_ID);
-
+    
     private static final List<ItemDefinition<?>> ITEMS = new ArrayList<>();
-
-    public static final ItemDefinition<GATDirectionalModifier> DIRECTIONAL_MODIFIER = item("Directional Modifier", GATItemIds.DIRECTIONAL_MODIFIER, GATDirectionalModifier::new);
-
+    
+    public static final ItemDefinition<GATDirectionalModifier> DIRECTIONAL_MODIFIER = GATItems.item("Directional Modifier", GATItemIds.DIRECTIONAL_MODIFIER, GATDirectionalModifier::new);
+    
     public static List<ItemDefinition<?>> getItems() {
-        return ITEMS;
+        return GATItems.ITEMS;
     }
-
-    static <T extends Item> ItemDefinition<T> item(String name, ResourceLocation id, Function<Item.Properties, T> factory) {
-        return item(name, id, factory, GATCreativeTabIds.MAIN);
+    
+    static <T extends Item> ItemDefinition<T> item(String name, Identifier id, Function<Item.Properties, T> factory) {
+        return GATItems.item(name, id, factory, GATCreativeTabIds.MAIN);
     }
-
-    static <T extends Item> ItemDefinition<T> item(String name, ResourceLocation id, Function<Item.Properties, T> factory, @Nullable ResourceKey<CreativeModeTab> group) {
-
-        Item.Properties p = new Item.Properties();
-
-        var definition = new ItemDefinition<>(name, DR.registerItem(id.getPath(), factory));
-
+    
+    static <T extends Item> ItemDefinition<T> item(String name, Identifier id, Function<Item.Properties, T> factory, @Nullable ResourceKey<CreativeModeTab> group) {
+        Preconditions.checkArgument(id.getNamespace().equals(GAT.MOD_ID), "Can only register for AE2");
+        var definition = new ItemDefinition<>(name, GATItems.DR.registerItem(id.getPath(), factory));
+        
         if (Objects.equals(group, GATCreativeTabIds.MAIN)) {
             GATCreativeTab.add(definition);
         } else if (group != null) {
             GATCreativeTab.add(definition);
             GATCreativeTab.addExternal(group, definition);
         }
-
-        ITEMS.add(definition);
-
+        
+        GATItems.ITEMS.add(definition);
+        
         return definition;
     }
 }

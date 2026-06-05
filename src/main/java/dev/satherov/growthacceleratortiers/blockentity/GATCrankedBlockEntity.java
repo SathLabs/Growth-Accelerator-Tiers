@@ -11,47 +11,43 @@ import net.minecraft.world.level.block.state.BlockState;
 import appeng.api.config.Actionable;
 import appeng.api.implementations.blockentities.ICrankable;
 import appeng.api.orientation.BlockOrientation;
-import appeng.api.orientation.RelativeSide;
 import appeng.api.util.AECableType;
 import appeng.blockentity.misc.CrankBlockEntity;
-import com.google.common.collect.ImmutableSet;
 
-import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.Set;
 
 public class GATCrankedBlockEntity extends GATGrowthAcceleratorBlockEntity {
-
+    
     public static final int MAX_STORED_POWER = GATConfig.instance().getCrankedInternalEnergyMultiplier() * CrankBlockEntity.POWER_PER_CRANK_TURN;
     public static final int POWER_PER_TICK = GATConfig.instance().getCrankedIdlePowerConsumption();
     public static final double MULTIPLIER = GATConfig.instance().getCrankedSpeedMultiplier();
-
+    
     public GATCrankedBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
-        super(MAX_STORED_POWER, POWER_PER_TICK, MULTIPLIER, blockEntityType, pos, blockState);
-        setPowerSides(Set.of());
+        super(GATCrankedBlockEntity.MAX_STORED_POWER, GATCrankedBlockEntity.POWER_PER_TICK, GATCrankedBlockEntity.MULTIPLIER, blockEntityType, pos, blockState);
+        this.setPowerSides(Set.of());
     }
-
+    
     public ICrankable getCrankable(Direction direction) {
         return new Crankable();
     }
-
+    
     @Override
     public Set<Direction> getGridConnectableSides(BlockOrientation orientation) {
         return Set.of();
     }
-
+    
     @Override
     public AECableType getCableConnectionType(Direction dir) {
         return AECableType.NONE;
     }
-
+    
     @Override
     public boolean isPowered() {
-        if (!isClientSide()) {
+        if (!this.isClientSide()) {
             // No extraction from the main net only check the interal buffer
-            return extractAEPower(POWER_PER_TICK, Actionable.SIMULATE) >= POWER_PER_TICK;
+            return this.extractAEPower(GATCrankedBlockEntity.POWER_PER_TICK, Actionable.SIMULATE) >= GATCrankedBlockEntity.POWER_PER_TICK;
         }
-
+        
         return this.getBlockState().getValue(GATGrowthAcceleratorBlock.POWERED);
     }
 }

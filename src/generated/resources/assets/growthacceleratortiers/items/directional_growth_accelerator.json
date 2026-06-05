@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "growthacceleratortiers:block/directional_growth_accelerator"
+  }
+}
