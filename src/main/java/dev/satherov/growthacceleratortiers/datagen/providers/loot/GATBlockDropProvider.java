@@ -19,26 +19,26 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
 public class GATBlockDropProvider extends BlockLootSubProvider {
-
+    
     public GATBlockDropProvider(HolderLookup.Provider providers) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), providers);
     }
-
+    
     @Override
     protected void generate() {
-        for (var block : getKnownBlocks()) {
-            add(block, defaultBuilder(block));
+        for (var block : this.getKnownBlocks()) {
+            this.add(block, this.defaultBuilder(block));
         }
     }
-
+    
     private LootTable.Builder defaultBuilder(Block block) {
         LootPoolEntryContainer.Builder<?> entry = LootItem.lootTableItem(block);
         LootPool.Builder pool = LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(entry)
                 .when(ExplosionCondition.survivesExplosion());
-
+        
         return LootTable.lootTable().withPool(pool);
     }
-
+    
     @Override
     protected @NotNull Iterable<Block> getKnownBlocks() {
         return BuiltInRegistries.BLOCK

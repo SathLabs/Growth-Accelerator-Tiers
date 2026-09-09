@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BuddingAmethystBlock.class)
 public class BuddingAmethystBlockMixin implements BuddingBlockGrowthHandler {
-
+    
     @Inject(
             method = "randomTick",
             at = @At(value = "INVOKE",
@@ -30,17 +30,17 @@ public class BuddingAmethystBlockMixin implements BuddingBlockGrowthHandler {
             cancellable = true
     )
     private void onRandomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {
-        if (growthAcceleratorTiers$checkForAccelerator(state, level, pos, random)) {
+        if (this.growthAcceleratorTiers$checkForAccelerator(state, level, pos, random)) {
             ci.cancel();
         }
     }
-
+    
     @Override
     @Unique
     public void growthAcceleratorTiers$handleGrowth(ServerLevel level, BlockPos pos, BlockPos growthPos, Direction direction, RandomSource randomSource) {
         BlockState targetState = level.getBlockState(growthPos);
         Block newBlock = null;
-
+        
         if (BuddingAmethystBlock.canClusterGrowAtState(targetState)) {
             newBlock = Blocks.SMALL_AMETHYST_BUD;
         } else if (targetState.is(Blocks.SMALL_AMETHYST_BUD) &&
@@ -53,7 +53,7 @@ public class BuddingAmethystBlockMixin implements BuddingBlockGrowthHandler {
                 targetState.getValue(AmethystClusterBlock.FACING) == direction) {
             newBlock = Blocks.AMETHYST_CLUSTER;
         }
-
+        
         if (newBlock != null) {
             BlockState newState = newBlock.defaultBlockState()
                     .setValue(AmethystClusterBlock.FACING, direction)

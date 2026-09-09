@@ -20,11 +20,11 @@ public class GATLootTableProvider extends LootTableProvider {
     private static final List<SubProviderEntry> SUB_PROVIDERS = List.of(
             new SubProviderEntry(GATBlockDropProvider::new, LootContextParamSets.BLOCK)
     );
-
+    
     public GATLootTableProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> provider) {
-        super(packOutput, Set.of(), SUB_PROVIDERS, provider);
+        super(packOutput, Set.of(), GATLootTableProvider.SUB_PROVIDERS, provider);
     }
-
+    
     @Override
     protected void validate(WritableRegistry<LootTable> writableregistry, ValidationContext validationcontext, ProblemReporter.Collector collector) { }
 }

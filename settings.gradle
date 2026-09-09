@@ -3,6 +3,7 @@ pluginManagement {
         mavenLocal()
         gradlePluginPortal()
         maven { url = 'https://maven.neoforged.net/releases' }
+        maven { url = 'https://maven.firstdark.dev/releases' } // Mod Publisher, the modpublisher plugin is not on the plugin portal
     }
 }
 

@@ -19,15 +19,14 @@ import appeng.datagen.providers.tags.ConventionTags;
 
 import java.util.concurrent.CompletableFuture;
 
-public class GATRecipeProvider extends RecipeProvider
-{
+public class GATRecipeProvider extends RecipeProvider {
     public GATRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
     }
-
+    
     @Override
     protected void buildRecipes(RecipeOutput output) {
-
+        
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, GATBlocks.CRANKED_GROWTH_ACCELERATOR)
                 .pattern("DCD")
                 .pattern("BAB")
@@ -36,9 +35,9 @@ public class GATRecipeProvider extends RecipeProvider
                 .define('B', Tags.Items.INGOTS_IRON)
                 .define('C', AEBlocks.CRANK)
                 .define('D', Tags.Items.COBBLESTONES)
-                .unlockedBy("has_crank", has(AEBlocks.CRANK))
+                .unlockedBy("has_crank", RecipeProvider.has(AEBlocks.CRANK))
                 .save(output);
-
+        
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, GATBlocks.DIRECTIONAL_GROWTH_ACCELERATOR)
                 .pattern("ECE")
                 .pattern("BAB")
@@ -49,9 +48,9 @@ public class GATRecipeProvider extends RecipeProvider
                 .define('D', Tags.Items.INGOTS_NETHERITE)
                 .define('E', AEItems.SPEED_CARD)
                 .define('F', AEItems.FORMATION_CORE)
-                .unlockedBy("had_accelerator", has(AEBlocks.GROWTH_ACCELERATOR))
+                .unlockedBy("had_accelerator", RecipeProvider.has(AEBlocks.GROWTH_ACCELERATOR))
                 .save(output);
-
+        
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, GATBlocks.BOOSTED_GROWTH_ACCELERATOR)
                 .pattern("ECE")
                 .pattern("BAB")
@@ -62,9 +61,9 @@ public class GATRecipeProvider extends RecipeProvider
                 .define('D', Tags.Items.INGOTS_NETHERITE)
                 .define('E', AEItems.SPEED_CARD)
                 .define('F', AEItems.ANNIHILATION_CORE)
-                .unlockedBy("had_accelerator", has(AEBlocks.GROWTH_ACCELERATOR))
+                .unlockedBy("had_accelerator", RecipeProvider.has(AEBlocks.GROWTH_ACCELERATOR))
                 .save(output);
-
+        
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, GATItems.DIRECTIONAL_MODIFIER)
                 .pattern(" B ")
                 .pattern(" AB")
@@ -72,7 +71,7 @@ public class GATRecipeProvider extends RecipeProvider
                 .define('A', ConventionTags.WRENCH)
                 .define('B', AEItems.FLUIX_PEARL)
                 .define('C', ConventionTags.CERTUS_QUARTZ)
-                .unlockedBy("has_wrench", has(ConventionTags.WRENCH))
+                .unlockedBy("has_wrench", RecipeProvider.has(ConventionTags.WRENCH))
                 .save(output);
     }
 }

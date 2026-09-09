@@ -9,10 +9,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
 public class GATTooltipEvent {
-
+    
     @SubscribeEvent
     public static void registerTooltips(ItemTooltipEvent event) {
-
+        
         if (event.getItemStack().is(GATBlocks.CRANKED_GROWTH_ACCELERATOR.asItem())) {
             event.getToolTip().add(Component.translatable("tooltip.growthacceleratortiers.cranked_growth_accelerator").withStyle(ChatFormatting.GRAY));
         } else if (event.getItemStack().is(GATBlocks.BOOSTED_GROWTH_ACCELERATOR.asItem())) {
@@ -23,6 +23,6 @@ public class GATTooltipEvent {
                             .append("\n")
                             .append(Component.translatable("tooltip.growthacceleratortiers.change_direction")).withStyle(ChatFormatting.GRAY));
         }
-
+        
     }
 }

@@ -12,21 +12,21 @@ import net.minecraft.data.PackOutput;
 import appeng.core.definitions.ItemDefinition;
 
 public class GATItemModelProvider extends ItemModelProvider {
-
+    
     public GATItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, GAT.MOD_ID, existingFileHelper);
     }
-
+    
     @Override
     protected void registerModels() {
-        flatSingleLayer(GATItems.DIRECTIONAL_MODIFIER, "directional_modifier");
+        this.flatSingleLayer(GATItems.DIRECTIONAL_MODIFIER, "directional_modifier");
     }
-
+    
     private ItemModelBuilder flatSingleLayer(ItemDefinition<?> item, String texture) {
         String id = item.id().getPath();
-        return singleTexture(
+        return this.singleTexture(
                 id,
-                mcLoc("item/generated"),
+                this.mcLoc("item/generated"),
                 "layer0",
                 GAT.rl("item/" + texture));
     }

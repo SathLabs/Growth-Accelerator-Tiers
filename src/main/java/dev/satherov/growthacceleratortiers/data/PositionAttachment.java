@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 
 import java.util.HashMap;
@@ -19,8 +20,8 @@ public class PositionAttachment {
                             .fieldOf("values")
                             .forGetter(attachment -> {
                                 Map<String, Integer> map = new HashMap<>();
-                                attachment.values.long2IntEntrySet().forEach(entry -> 
-                                    map.put(Long.toString(entry.getLongKey()), entry.getIntValue())
+                                attachment.values.long2IntEntrySet().forEach(entry ->
+                                        map.put(Long.toString(entry.getLongKey()), entry.getIntValue())
                                 );
                                 return map;
                             })
@@ -28,16 +29,16 @@ public class PositionAttachment {
     );
     
     private PositionAttachment(Map<String, Integer> initial) {
-        initial.forEach((key, value) -> values.put(Long.parseLong(key), (int) value));
+        initial.forEach((key, value) -> this.values.put(Long.parseLong(key), (int) value));
     }
     
     public PositionAttachment() { }
     
     public void put(BlockPos pos, int value) {
-        values.put(pos.immutable().asLong(), value);
+        this.values.put(pos.immutable().asLong(), value);
     }
     
     public int get(BlockPos pos) {
-        return values.getOrDefault(pos.immutable().asLong(), 0);
+        return this.values.getOrDefault(pos.immutable().asLong(), 0);
     }
 }

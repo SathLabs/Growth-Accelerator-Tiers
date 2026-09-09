@@ -12,10 +12,10 @@ import appeng.blockentity.AEBaseInvBlockEntity;
 import appeng.blockentity.powersink.AEBasePoweredBlockEntity;
 
 public class GATInitCapabilityProviders {
-
+    
     public static void register(RegisterCapabilitiesEvent event) {
-        initCrankable(event);
-
+        GATInitCapabilityProviders.initCrankable(event);
+        
         for (var type : GATBlockEntities.getSubclassesOf(AEBaseInvBlockEntity.class)) {
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, type, AEBaseInvBlockEntity::getExposedItemHandler);
         }
@@ -26,7 +26,7 @@ public class GATInitCapabilityProviders {
             event.registerBlockEntity(AECapabilities.IN_WORLD_GRID_NODE_HOST, type, (object, context) -> (IInWorldGridNodeHost) object);
         }
     }
-
+    
     private static void initCrankable(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(AECapabilities.CRANKABLE, GATBlockEntities.CRANKED_GROWTH_ACCELERATOR.get(), GATGrowthAcceleratorBlockEntity::getCrankable);
         event.registerBlockEntity(AECapabilities.CRANKABLE, GATBlockEntities.DIRECTIONAL_GROWTH_ACCELERATOR.get(), GATGrowthAcceleratorBlockEntity::getCrankable);

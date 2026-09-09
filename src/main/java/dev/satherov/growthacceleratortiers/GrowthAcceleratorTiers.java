@@ -23,23 +23,20 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
-import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-
-import com.mojang.brigadier.CommandDispatcher;
 
 @Mod(GAT.MOD_ID)
 public class GrowthAcceleratorTiers {
     public GrowthAcceleratorTiers(IEventBus modEventBus, ModContainer modContainer) {
-
+        
         GATConfig.register(modContainer);
-
+        
         GATBlocks.DR.register(modEventBus);
         GATItems.DR.register(modEventBus);
         GATBlockEntities.DR.register(modEventBus);
         GATAttachmentTypes.register(modEventBus);
-
+        
         NeoForge.EVENT_BUS.addListener(GATPlayerInteractEvent::onPlayerUseBlockEvent);
         NeoForge.EVENT_BUS.addListener(GATTooltipEvent::registerTooltips);
         NeoForge.EVENT_BUS.addListener(GrowthAcceleratorTiers::onRegisterCommands);
@@ -50,19 +47,19 @@ public class GrowthAcceleratorTiers {
                 GATCreativeTab.init(BuiltInRegistries.CREATIVE_MODE_TAB);
             }
         });
-
+        
         if (FMLEnvironment.dist.isClient()) {
             Client.registerConfigScreen(modContainer);
         }
     }
-
+    
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {
         GATCommands.register(event.getDispatcher());
     }
-
+    
     static class Client {
-
+        
         public static void registerConfigScreen(ModContainer modContainer) {
             modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }

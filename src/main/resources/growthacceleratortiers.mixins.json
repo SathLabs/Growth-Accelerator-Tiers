@@ -6,8 +6,10 @@
   "mixins": [
     "BuddingAmethystBlockMixin",
     "BuddingCertusQuartzBlockMixin",
+    "BuddingEnergizedCrystalBlockMixin",
     "BuddingEntroBlockMixin",
-    "BuddingGeoreBlockMixin"
+    "BuddingGeoreBlockMixin",
+    "BuddingTimeCrystalBlockMixin"
   ],
   "client": [
   ],

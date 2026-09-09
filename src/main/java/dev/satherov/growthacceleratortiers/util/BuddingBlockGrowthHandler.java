@@ -10,26 +10,24 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-import org.spongepowered.asm.mixin.Unique;
-
 public interface BuddingBlockGrowthHandler {
-
+    
     default boolean growthAcceleratorTiers$checkForAccelerator(BlockState state, ServerLevel level, BlockPos pos, RandomSource randomSource) {
-        for(Direction dir : Direction.values()) {
+        for (Direction dir : Direction.values()) {
             BlockPos checkPos = pos.relative(dir);
             BlockState checkState = level.getBlockState(checkPos);
-
+            
             if (checkState.getBlock() instanceof GATDirectionalBlock) {
                 Direction direction = checkState.getValue(GATDirectionalBlock.DIRECTION).getDirection(checkState.getValue(BlockStateProperties.FACING));
                 BlockPos growthPos = pos.relative(direction);
-
-                growthAcceleratorTiers$handleGrowth(level, pos, growthPos, direction, randomSource);
+                
+                this.growthAcceleratorTiers$handleGrowth(level, pos, growthPos, direction, randomSource);
                 return true;
             }
         }
         return false;
     }
-
+    
     default boolean growthAcceleratorTiers$canClusterGrowAtState(BlockState state) {
         return state.isAir() || state.is(Blocks.WATER) && state.getFluidState().getAmount() == 8;
     }

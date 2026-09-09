@@ -1,7 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "${loader_version_range}"
 license = "${mod_license}"
-issueTrackerURL = "https://github.com/Satherov/Growth-Accelerator-Tiers"
+issueTrackerURL = "https://github.com/SathLabs/Growth-Accelerator-Tiers/issues"
 
 
 [[mods]]
@@ -28,13 +28,13 @@ side = "BOTH"
 [[dependencies.${ mod_id }]]
 modId = "minecraft"
 type = "required"
-versionRange = "${minecraft_version_range}"
+versionRange = "${mc_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.${ mod_id }]]
 modId = "ae2"
 type = "required"
-versionRange = "[19.2.12,)"
+versionRange = "[19.2.17,)"
 ordering = "NONE"
 side = "BOTH"

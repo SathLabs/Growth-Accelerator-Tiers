@@ -1,7 +1,8 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.92'
+    id 'net.neoforged.moddev' version '2.0.146'
+    id 'com.hypherionmc.modutils.modpublisher' version '2.2.2'
     id 'idea'
 }
 
@@ -9,7 +10,7 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-version = mod_version + "_neoforge_" + minecraft_version
+version = mod_version + "+" + mc_version
 group = mod_group_id
 
 base {
@@ -88,39 +89,58 @@ repositories {
         name = "TerraformersMC"
         url = "https://maven.terraformersmc.com/"
     }
+    maven {
+        name = "Registrate"
+        url = "https://maven.gegy.dev/releases"
+        content {
+            includeGroup "com.tterrag.registrate"
+        }
+    }
 }
 
 dependencies {
+    implementation "org.appliedenergistics:appliedenergistics2:${ae2_version}"
+
     compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
-    runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
+    localRuntime "dev.emi:emi-neoforge:${emi_version}"
 
-    implementation "curse.maven:guideme-1173950:6812025"
-    implementation "org.appliedenergistics:appliedenergistics2:${ae2_version}:"
+    compileOnly "curse.maven:jade-324717:8591319"
+    localRuntime "curse.maven:jade-324717:8591319"
 
-    implementation "curse.maven:jade-324717:6853386"
-    implementation "curse.maven:geore-530544:6550861"
+    compileOnly "curse.maven:geore-530544:7966801"
+    localRuntime "curse.maven:geore-530544:7966801"
 
-    implementation "curse.maven:glodium-957920:5821676"
-    implementation "curse.maven:ex-pattern-provider-892005:6863556"
+    compileOnly "curse.maven:ex-pattern-provider-892005:8811572"
+    localRuntime "curse.maven:ex-pattern-provider-892005:8811572"
 
-    implementation "curse.maven:mekanism-268560:6486993"
-    implementation "curse.maven:just-dire-things-1002348:6369120"
-    implementation "curse.maven:super-factory-manager-306935:6849471"
+    compileOnly "curse.maven:just-dire-things-1002348:7463040"
+    localRuntime "curse.maven:just-dire-things-1002348:7463040"
+
+    compileOnly "curse.maven:neo-eco-ae-extension-1460639:8463264"
+    localRuntime "curse.maven:neo-eco-ae-extension-1460639:8463264"
+
+    compileOnly "com.tterrag.registrate:Registrate:MC1.21.1-1.4.8"
+
+    localRuntime "org.appliedenergistics:guideme:${guideme_version}"
+    localRuntime "curse.maven:ldlib-626676:8813684"
+    localRuntime "curse.maven:glodium-957920:5821676"
+    localRuntime "curse.maven:mekanism-268560:7904058"
+    localRuntime "curse.maven:super-factory-manager-306935:8370241"
 }
 
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
-            minecraft_version      : minecraft_version,
-            minecraft_version_range: minecraft_version_range,
-            neo_version            : neo_version,
-            neo_version_range      : neo_version_range,
-            loader_version_range   : loader_version_range,
-            mod_id                 : mod_id,
-            mod_name               : mod_name,
-            mod_license            : mod_license,
-            mod_version            : mod_version,
-            mod_authors            : mod_authors,
-            mod_description        : mod_description
+            mc_version          : mc_version,
+            mc_version_range    : mc_version_range,
+            neo_version         : neo_version,
+            neo_version_range   : neo_version_range,
+            loader_version_range: loader_version_range,
+            mod_id              : mod_id,
+            mod_name            : mod_name,
+            mod_license         : mod_license,
+            mod_version         : mod_version,
+            mod_authors         : mod_authors,
+            mod_description     : mod_description
     ]
     inputs.properties replaceProperties
 
@@ -142,6 +162,10 @@ publishing {
             url "file://${project.projectDir}/repo"
         }
     }
+}
+
+publisher {
+    setCurseID("1316818")
 }
 
 tasks.withType(JavaCompile).configureEach {

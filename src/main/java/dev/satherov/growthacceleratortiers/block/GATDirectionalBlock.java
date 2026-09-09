@@ -15,20 +15,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 
 public class GATDirectionalBlock extends GATMonoBlock<GATDirectionalBlockEntity> {
-
+    
     public static final EnumProperty<Directions> DIRECTION = EnumProperty.create("direction", Directions.class);
-
+    
     public GATDirectionalBlock() {
         super(GATAttachmentTypes.DIRECTIONAL_POSITION);
-        this.registerDefaultState(this.defaultBlockState().setValue(DIRECTION, Directions.UP).setValue(CONFLICTED, false));
+        this.registerDefaultState(this.defaultBlockState().setValue(GATDirectionalBlock.DIRECTION, Directions.UP).setValue(GATMonoBlock.CONFLICTED, false));
     }
-
+    
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(DIRECTION);
+        builder.add(GATDirectionalBlock.DIRECTION);
     }
-
+    
     public enum Directions implements StringRepresentable {
         UP,
         DOWN,
@@ -37,7 +37,7 @@ public class GATDirectionalBlock extends GATMonoBlock<GATDirectionalBlockEntity>
         EAST,
         WEST,
         OPPOSITE;
-
+        
         public Direction getDirection(Direction facing) {
             return switch (this) {
                 case DOWN -> Direction.DOWN;
@@ -49,7 +49,7 @@ public class GATDirectionalBlock extends GATMonoBlock<GATDirectionalBlockEntity>
                 default -> Direction.UP;
             };
         }
-
+        
         @Override
         public @NotNull String getSerializedName() {
             return this.name().toLowerCase(Locale.ROOT);
