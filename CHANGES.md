@@ -1,0 +1,3 @@
+- Support for Just Dire Things.
+- Fix a bug with Geores growing way too fast.
+- Ukrainian translation (Tenwoc)

@@ -46,7 +46,7 @@ public class BuddingGeoreBlockMixin implements BuddingBlockGrowthHandler {
             method = "randomTick",
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/util/RandomSource;nextInt(I)I",
-                    ordinal = 0),
+                    ordinal = 1),
             cancellable = true
     )
     private void onRandomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {

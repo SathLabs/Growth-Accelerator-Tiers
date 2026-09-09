@@ -29,6 +29,13 @@ config="${mod_id}.mixins.json"
 [[dependencies.${mod_id}]]
     modId="minecraft"
     type="required"
-    versionRange="${minecraft_version_range}"
+    versionRange="${mc_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="ae2"
+    type="required"
+    versionRange="[26.1.11-beta,)"
     ordering="NONE"
     side="BOTH"

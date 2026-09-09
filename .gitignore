@@ -38,3 +38,9 @@ run/
 **/src/generated/**/.cache/
 repo/
 !**/src/**/repo/
+
+### Agents ###
+CLAUDE.md
+agents/
+docs/
+notes/
