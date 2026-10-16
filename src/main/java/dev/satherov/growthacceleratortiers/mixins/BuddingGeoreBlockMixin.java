@@ -42,14 +42,12 @@ public class BuddingGeoreBlockMixin implements BuddingBlockGrowthHandler {
     @Final
     private Supplier<? extends AmethystClusterBlock> clusterSupplier;
     
-    // Ordinal 1 is GeoRe's direction pick, `DIRECTIONS[random.nextInt(DIRECTIONS.length)]`. Ordinal 0 was its growth
-    // roll, `random.nextInt(5) != 0`, and cancelling in front of that roll grew a bud on every random tick instead
-    // of on one in five, so an accelerated geore grew five times as fast as the mod intends.
     @Inject(
             method = "randomTick",
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/util/RandomSource;nextInt(I)I",
-                    ordinal = 1),
+                    ordinal = 0
+            ),
             cancellable = true
     )
     private void onRandomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {
