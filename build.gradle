@@ -104,28 +104,28 @@ dependencies {
     compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
     localRuntime "dev.emi:emi-neoforge:${emi_version}"
 
-    compileOnly "curse.maven:jade-324717:8591319"
-    localRuntime "curse.maven:jade-324717:8591319"
+    compileOnly "curse.maven:jade-324717:${jade_version}"
+    localRuntime "curse.maven:jade-324717:${jade_version}"
 
-    compileOnly "curse.maven:geore-530544:7966801"
-    localRuntime "curse.maven:geore-530544:7966801"
+    compileOnly "curse.maven:geore-530544:${geore_version}"
+    localRuntime "curse.maven:geore-530544:${geore_version}"
 
-    compileOnly "curse.maven:ex-pattern-provider-892005:8811572"
-    localRuntime "curse.maven:ex-pattern-provider-892005:8811572"
+    compileOnly "curse.maven:ex-pattern-provider-892005:${extendedae_version}"
+    localRuntime "curse.maven:ex-pattern-provider-892005:${extendedae_version}"
 
-    compileOnly "curse.maven:just-dire-things-1002348:7463040"
-    localRuntime "curse.maven:just-dire-things-1002348:7463040"
+    compileOnly "curse.maven:just-dire-things-1002348:${justdirethings_version}"
+    localRuntime "curse.maven:just-dire-things-1002348:${justdirethings_version}"
 
-    compileOnly "curse.maven:neo-eco-ae-extension-1460639:8463264"
-    localRuntime "curse.maven:neo-eco-ae-extension-1460639:8463264"
+    compileOnly "curse.maven:neo-eco-ae-extension-1460639:${neoecoae_version}"
+    localRuntime "curse.maven:neo-eco-ae-extension-1460639:${neoecoae_version}"
 
-    compileOnly "com.tterrag.registrate:Registrate:MC1.21.1-1.4.8"
+    compileOnly "com.tterrag.registrate:Registrate:${registrate_version}"
 
     localRuntime "org.appliedenergistics:guideme:${guideme_version}"
-    localRuntime "curse.maven:ldlib-626676:8813684"
-    localRuntime "curse.maven:glodium-957920:5821676"
-    localRuntime "curse.maven:mekanism-268560:7904058"
-    localRuntime "curse.maven:super-factory-manager-306935:8370241"
+    localRuntime "curse.maven:ldlib-626676:${ldlib_version}"
+    localRuntime "curse.maven:glodium-957920:${glodium_version}"
+    localRuntime "curse.maven:mekanism-268560:${mekanism_version}"
+    localRuntime "curse.maven:super-factory-manager-306935:${sfm_version}"
 }
 
 tasks.withType(ProcessResources).configureEach {
