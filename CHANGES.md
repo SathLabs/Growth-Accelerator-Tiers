@@ -1,4 +1,1 @@
-- Support for Just Dire Things.
-- Support for Neo ECO AE Extension.
-- Fix a bug with Geores growing way too fast.
-- Fix a bug with accelerators conflicting for seemingly no reason.
+- fixes a crash with GeOres
